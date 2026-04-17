@@ -1,7 +1,9 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;//Tilemap的命名空间
 
+//声明该脚本依赖于Tilemap组件
 [RequireComponent(typeof(Tilemap))]
+//--------------------------------【所有内容都属于View】----------------------------------
 public class Board : MonoBehaviour
 {
     //获得Tilemap引用
@@ -27,7 +29,7 @@ public class Board : MonoBehaviour
         tilemap = GetComponent<Tilemap>();
     }
 
-
+    //读取二维数组中每个格子的状态并显示
     public void Draw(Cell[,] state)//二维Cell数组可以理解为int[,]
     {
         //这个state就是来存储每个格子是什么状态的数据的
@@ -45,12 +47,14 @@ public class Board : MonoBehaviour
         }
     }
 
+
+
     private Tile GetTile(Cell cell)
     {
         //已经暴露出来
         if (cell.revealed) 
         {
-            //确定需要显示哪重格子
+            //确定需要显示哪种格子
             return GetRevealedTile(cell);
         } 
         //已经被标记
@@ -63,6 +67,7 @@ public class Board : MonoBehaviour
             return tileUnknown;
         }
     }
+
 
     //确定需要显示哪种格子
     private Tile GetRevealedTile(Cell cell)

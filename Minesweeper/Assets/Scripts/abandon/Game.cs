@@ -3,22 +3,28 @@ using UnityEngine;
 
 public class Game : MonoBehaviour
 {
+    //--------------Model-------------
     public int width = 16;//地图宽度
     public int height = 16;//地图长度
     public int mineCount = 32;
+    //-------------Model--------------
 
     //显示脚本的引用
     private Board board;
+    //游戏结束标志位
+    private bool gameover;
     //储存格子数组数据
     private Cell[,] state;
-    private bool gameover;
+    
 
+    //------------------M-------------------
     //Unity自带的函数，面板值被改变时调用
     private void OnValidate()
     {
         //确保雷的数量在某个范围内
         mineCount = Mathf.Clamp(mineCount, 0, width * height);
     }
+    //------------------M-------------------
 
     private void Awake()
     {
@@ -34,19 +40,21 @@ public class Game : MonoBehaviour
 
     private void NewGame()
     {
+        //-------------Model--------------
         state = new Cell[width, height];
         //这个函数生成数据，并把数据存到二维数组
         GenerateCells();
         GenerateMines();
         GenerateNumbers();
+        //------------Model--------------
         //调用面板脚本根据二维数组将格子在游戏上显示
         board.Draw(state);
         //调整相机位置使版面总是位于中心
         Camera.main.transform.position = new Vector3(width / 2f, height / 2f, -10f);
-
         gameover = false;
     }
 
+    //------------Model--------------
     //生成普通格子
     private void GenerateCells()
     {
@@ -145,6 +153,8 @@ public class Game : MonoBehaviour
         return count;
     }
 
+    //------------Model--------------
+
     //----------------------------------Controller内容
     private void Update()
     {
@@ -166,6 +176,8 @@ public class Game : MonoBehaviour
        
     }
 
+    //------------Controller---------
+    //------------Model--------------
     private void Flag()
     {
         //将屏幕坐标转换为世界坐标,相机类功能
@@ -306,4 +318,5 @@ public class Game : MonoBehaviour
             }
         }
     }
- }
+    //------------Model--------------
+}
