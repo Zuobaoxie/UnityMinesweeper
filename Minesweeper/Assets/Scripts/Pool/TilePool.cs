@@ -13,8 +13,6 @@ public class TilePool : MonoBehaviour
     public static TilePool Instance => instance;
     //字典，通过Tile对象查找对象池
     private Dictionary<Tile, Queue<Tile>> pools = new Dictionary<Tile, Queue<Tile>>();
-    //字典，储存原始Tile的克隆模板
-    private Dictionary<Tile, Tile> originalTiles = new Dictionary<Tile, Tile>();
 
     private void Awake()
     {
@@ -26,8 +24,6 @@ public class TilePool : MonoBehaviour
     {
         //对象池管理器里已经有该对象的对象池
         if (pools.ContainsKey(original)) return;
-        //添加到克隆字典
-        originalTiles[original] = original;
         //往对象池管理器里添加新对象池
         pools[original] = new Queue<Tile>();
         //预先准备好对象
