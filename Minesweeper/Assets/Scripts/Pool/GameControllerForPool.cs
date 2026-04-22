@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameController : MonoBehaviour
+public class GameControllerForPool : MonoBehaviour
 {
 
     //显示脚本的引用
-    private Board board;
+    private BoardForPool board;
     //游戏结束标志位
     private bool gameover;
     //储存格子数组数据
@@ -16,7 +16,7 @@ public class GameController : MonoBehaviour
     {
         Application.targetFrameRate = 60;
         //获得显示脚本引用
-        board = GetComponentInChildren<Board>();
+        board = GetComponentInChildren<BoardForPool>();
     }
 
     private void Start()
@@ -27,12 +27,12 @@ public class GameController : MonoBehaviour
     private void NewGame()
     {
         //-------------Model--------------
-        state = Model.Instance.GenerateCellsData();
+        state = ModelForPool.Instance.GenerateCellsData();
         //------------Model--------------
         //调用面板脚本根据二维数组将格子在游戏上显示
         board.Draw(state);
         //调整相机位置使版面总是位于中心
-        Camera.main.transform.position = new Vector3(Model.Instance.width / 2f, Model.Instance.height / 2f, -10f);
+        Camera.main.transform.position = new Vector3(ModelForPool.Instance.width / 2f, ModelForPool.Instance.height / 2f, -10f);
         gameover = false;
     }
 
@@ -46,11 +46,11 @@ public class GameController : MonoBehaviour
         {
             if (Input.GetMouseButtonDown(1))//鼠标右键
             {
-                Model.Instance.Flag(Input.mousePosition);
+                ModelForPool.Instance.Flag(Input.mousePosition);
             }
             else if (Input.GetMouseButtonDown(0))
             {
-                gameover = Model.Instance.Reveal(Input.mousePosition);
+                gameover = ModelForPool.Instance.Reveal(Input.mousePosition);
             }
         }
 

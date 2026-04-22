@@ -48,7 +48,6 @@ public class Board : MonoBehaviour
     }
 
 
-
     private Tile GetTile(Cell cell)
     {
         //已经暴露出来
