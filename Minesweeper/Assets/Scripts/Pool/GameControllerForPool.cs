@@ -19,6 +19,17 @@ public class GameControllerForPool : MonoBehaviour
         board = GetComponentInChildren<BoardForPool>();
     }
 
+    private void OnEnable()
+    {
+        EventCenter.AddListener(EventID.WIN, StopTheGame);
+        EventCenter.AddListener(EventID.LOSE, StopTheGame);
+    }
+    private void OnDisable()
+    {
+        EventCenter.RemoveListener(EventID.WIN, StopTheGame);
+        EventCenter.RemoveListener(EventID.LOSE, StopTheGame);
+    }
+
     private void Start()
     {
         NewGame();
@@ -54,6 +65,12 @@ public class GameControllerForPool : MonoBehaviour
             }
         }
 
+    }
+    private void StopTheGame(object iswin)
+    {
+        if ((bool)iswin) { Debug.Log("You Win!"); }
+        else { Debug.Log("You Lose!"); }
+        Time.timeScale = 0;
     }
 
 }

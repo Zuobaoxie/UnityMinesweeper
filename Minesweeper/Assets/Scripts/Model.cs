@@ -188,13 +188,13 @@ public class Model : MonoBehaviour
                 break;
             case Cell.Type.Empty:
                 Flood(cell);
-                isGameOver = CheckWinCondition();
+                CheckWinCondition();
                 break;
             default:
                 cell.revealed = true;
                 //更新数据
                 state[cellPosition.x, cellPosition.y] = cell;
-                isGameOver = CheckWinCondition();
+                CheckWinCondition();
                 break;
         }
         //更新面板
@@ -203,9 +203,7 @@ public class Model : MonoBehaviour
     }
     //爆炸
     private bool Explode(Cell cell)
-    {
-        gameOver = true;
-        Debug.Log("Game Over");
+    {        
         //先修改格子状态
         cell.exploded = true;
         cell.revealed = true;
@@ -224,7 +222,9 @@ public class Model : MonoBehaviour
                 }
             }
         }
-        return gameOver;
+        //广播玩家输了
+        EventCenter.DisPatch(EventID.LOSE,false);
+        return true;
     }
 
     //洪范递归
@@ -247,7 +247,7 @@ public class Model : MonoBehaviour
 
     }
 
-    private bool CheckWinCondition()
+    private void CheckWinCondition()
     {
         for (int x = 0; x < width; x++)
         {
@@ -259,14 +259,12 @@ public class Model : MonoBehaviour
                 //所以这里判断是否有不是雷的格子还没暴露，有的话就继续游戏
                 if (cell.type != Cell.Type.Mine && !cell.revealed)
                 {
-                    return false; // no win
+                    return; // no win
                 }
             }
         }
-        Debug.Log("You Win!");
-        gameOver = true;
 
-        //这里是为了在赢了之后显示地雷
+        //这里是为了在赢了之后用旗子显示地雷
         for (int x = 0; x < width; x++)
         {
             for (int y = 0; y < height; y++)
@@ -279,6 +277,7 @@ public class Model : MonoBehaviour
                 }
             }
         }
-        return gameOver;
+        //广播赢
+        EventCenter.DisPatch(EventID.WIN,true);
     }
 }
