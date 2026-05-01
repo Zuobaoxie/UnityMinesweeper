@@ -21,13 +21,13 @@ public class GameController : MonoBehaviour
     }
     private void OnEnable()
     {
-        EventCenter.AddListener(EventID.WIN, StopTheGame);
-        EventCenter.AddListener(EventID.LOSE, StopTheGame);
+        EventCenter.AddListener<StopEventData>(EventID.WIN, StopTheGame);
+        EventCenter.AddListener<StopEventData>(EventID.LOSE, StopTheGame);
     }
     private void OnDisable()
     {
-        EventCenter.RemoveListener(EventID.WIN, StopTheGame);
-        EventCenter.RemoveListener(EventID.LOSE, StopTheGame);
+        EventCenter.RemoveListener<StopEventData>(EventID.WIN, StopTheGame);
+        EventCenter.RemoveListener<StopEventData>(EventID.LOSE, StopTheGame);
     }
 
     private void Start()
@@ -37,13 +37,12 @@ public class GameController : MonoBehaviour
 
     private void NewGame()
     {
+        //这里换成事件
         //-------------Model--------------
         state = Model.Instance.GenerateCellsData();
         //------------Model--------------
         //调用面板脚本根据二维数组将格子在游戏上显示
-        board.Draw(state);
-        //调整相机位置使版面总是位于中心
-        Camera.main.transform.position = new Vector3(Model.Instance.width / 2f, Model.Instance.height / 2f, -10f);
+        board.Draw(state);        
         //gameover = false;
     }
 
@@ -67,10 +66,10 @@ public class GameController : MonoBehaviour
       
     }
 
-    private void StopTheGame(object iswin)
+    private void StopTheGame(StopEventData data)
     {
-        if ((bool)iswin){ Debug.Log("You Win!");}
-        else { Debug.Log("You Lose!"); }
+        if (data.isWin){ Debug.Log("You Win! " + " Mine:" + data.mineSum);}
+        else { Debug.Log("You Lose! "+ " Mine:" + data.mineSum); }
         Time.timeScale = 0;
     }
 

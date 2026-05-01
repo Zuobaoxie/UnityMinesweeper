@@ -223,7 +223,8 @@ public class Model : MonoBehaviour
             }
         }
         //广播玩家输了
-        EventCenter.DisPatch(EventID.LOSE,false);
+        var data = new StopEventData(false, mineCount);
+        EventCenter.DisPatch(EventID.LOSE,data);
         return true;
     }
 
@@ -278,6 +279,7 @@ public class Model : MonoBehaviour
             }
         }
         //广播赢
-        EventCenter.DisPatch(EventID.WIN,true);
+        var data = new StopEventData(true, mineCount);
+        EventCenter.DisPatch(EventID.WIN,data);
     }
 }

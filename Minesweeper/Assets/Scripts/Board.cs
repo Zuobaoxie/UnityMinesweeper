@@ -29,6 +29,12 @@ public class Board : MonoBehaviour
         tilemap = GetComponent<Tilemap>();
     }
 
+    private void Start()
+    {
+        //调整相机位置使版面总是位于中心
+        Camera.main.transform.position = new Vector3(Model.Instance.width / 2f, Model.Instance.height / 2f, -10f);
+    }
+
     //读取二维数组中每个格子的状态并显示
     public void Draw(Cell[,] state)//二维Cell数组可以理解为int[,]
     {
