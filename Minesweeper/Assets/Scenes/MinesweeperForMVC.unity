@@ -151,9 +151,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dcee440fb94bc0e42bcca1b8c4c9a4d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 4
-  height: 4
-  mineCount: 2
+  width: 5
+  height: 5
+  mineCount: 6
   board: {fileID: 1635494449}
 --- !u!4 &74011677
 Transform:

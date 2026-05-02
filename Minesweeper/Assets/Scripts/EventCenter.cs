@@ -9,6 +9,7 @@ public class EventID
 {
     public const string WIN = "Win";
     public const string LOSE = "Lose";
+    public const string DataGenerated = "DataGenerated";
 }
 public class EventCenter : MonoBehaviour
 {

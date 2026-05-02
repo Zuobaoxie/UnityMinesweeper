@@ -15,7 +15,7 @@
 //    private bool gameover;
 //    //储存格子数组数据
 //    private Cell[,] state;
-    
+
 
 //    //------------------M-------------------
 //    //Unity自带的函数，面板值被改变时调用
@@ -38,21 +38,21 @@
 //        NewGame();
 //    }
 
-//    private void NewGame()
-//    {
-//        //-------------Model--------------
-//        state = new Cell[width, height];
-//        //这个函数生成数据，并把数据存到二维数组
-//        GenerateCells();
-//        GenerateMines();
-//        GenerateNumbers();
-//        //------------Model--------------
-//        //调用面板脚本根据二维数组将格子在游戏上显示
-//        board.Draw(state);
-//        //调整相机位置使版面总是位于中心
-//        Camera.main.transform.position = new Vector3(width / 2f, height / 2f, -10f);
-//        gameover = false;
-//    }
+//private void NewGame()
+//{
+//    //-------------Model--------------
+//    state = new Cell[width, height];
+//    //这个函数生成数据，并把数据存到二维数组
+//    GenerateCells();
+//    GenerateMines();
+//    GenerateNumbers();
+//    //------------Model--------------
+//    //调用面板脚本根据二维数组将格子在游戏上显示
+//    board.Draw(state);
+//    //调整相机位置使版面总是位于中心
+//    Camera.main.transform.position = new Vector3(width / 2f, height / 2f, -10f);
+//    gameover = false;
+//}
 
 //    //------------Model--------------
 //    //生成普通格子
@@ -173,7 +173,7 @@
 //                Reveal();
 //            }
 //        }
-       
+
 //    }
 
 //    //------------Controller---------
@@ -282,7 +282,7 @@
 //            Flood(GetCell(cell.position.x,cell.position.y + 1));
 //            Flood(GetCell(cell.position.x,cell.position.y - 1));
 //        }
-        
+
 //    }
 
 //    private void CheckWinCondition()

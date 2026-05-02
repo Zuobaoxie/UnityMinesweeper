@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class GameController : MonoBehaviour
 {
@@ -10,7 +11,9 @@ public class GameController : MonoBehaviour
     //游戏结束标志位
     //private bool gameover;
     //储存格子数组数据
-    private Cell[,] state;
+    //private Cell[,] state;
+    //定义事件,描述数据生成完成
+    //public event Action<Cell[,]> OnCellsDataGenerated;
 
     private void Awake()
     {
@@ -37,12 +40,21 @@ public class GameController : MonoBehaviour
 
     private void NewGame()
     {
-        //这里换成事件
-        //-------------Model--------------
-        state = Model.Instance.GenerateCellsData();
-        //------------Model--------------
+        // 订阅完成事件
+        //Model.Instance.OnCellsDataGenerated += OnDataGenerated;
+        EventCenter.AddListener<Cell[,]>(EventID.DataGenerated, OnDataGenerated);
+        // 发送通知让Model干活
+        Model.Instance.GenerateCellsDataAsync();        
+    }
+
+    private void OnDataGenerated(Cell[,] state)
+    {
+        // 取消订阅，避免重复调用
+        //Model.Instance.OnCellsDataGenerated -= OnDataGenerated;
+        EventCenter.RemoveListener<Cell[,]>(EventID.DataGenerated, OnDataGenerated);
         //调用面板脚本根据二维数组将格子在游戏上显示
-        board.Draw(state);        
+        board.Draw(state);
+        board.SetBoardToCenter();
         //gameover = false;
     }
 
@@ -71,6 +83,7 @@ public class GameController : MonoBehaviour
         if (data.isWin){ Debug.Log("You Win! " + " Mine:" + data.mineSum);}
         else { Debug.Log("You Lose! "+ " Mine:" + data.mineSum); }
         Time.timeScale = 0;
+        //Debug.Log("游戏暂停");
     }
 
 
