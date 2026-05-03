@@ -3,17 +3,26 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
+public class GameEventID
+{
+    public const string WIN = "Win";
+    public const string LOSE = "Lose";
+}
 public class GameController : MonoBehaviour
 {
 
     //显示脚本的引用
     private Board board;
+    private BoardForProps boardForProps;
+    public FadeIn boardFadeIn;
     //游戏结束标志位
     //private bool gameover;
     //储存格子数组数据
     //private Cell[,] state;
     //定义事件,描述数据生成完成
     //public event Action<Cell[,]> OnCellsDataGenerated;
+    //定义事件，以后增加事件只需要在这里修改
+
 
     private void Awake()
     {
@@ -21,20 +30,23 @@ public class GameController : MonoBehaviour
         Application.targetFrameRate = 60;
         //获得显示脚本引用
         board = GetComponentInChildren<Board>();
+        boardForProps = GetComponentInChildren<BoardForProps>();
     }
     private void OnEnable()
     {
-        EventCenter.AddListener<StopEventData>(EventID.WIN, StopTheGame);
-        EventCenter.AddListener<StopEventData>(EventID.LOSE, StopTheGame);
+        EventCenter.AddListener<StopEventData>(GameEventID.WIN, StopTheGame);
+        EventCenter.AddListener<StopEventData>(GameEventID.LOSE, StopTheGame);
     }
     private void OnDisable()
     {
-        EventCenter.RemoveListener<StopEventData>(EventID.WIN, StopTheGame);
-        EventCenter.RemoveListener<StopEventData>(EventID.LOSE, StopTheGame);
+        EventCenter.RemoveListener<StopEventData>(GameEventID.WIN, StopTheGame);
+        EventCenter.RemoveListener<StopEventData>(GameEventID.LOSE, StopTheGame);
     }
 
     private void Start()
     {
+        board.SetBoardToCenter();
+        boardFadeIn.StartFadeIn();
         NewGame();
     }
 
@@ -42,19 +54,20 @@ public class GameController : MonoBehaviour
     {
         // 订阅完成事件
         //Model.Instance.OnCellsDataGenerated += OnDataGenerated;
-        EventCenter.AddListener<Cell[,]>(EventID.DataGenerated, OnDataGenerated);
+        EventCenter.AddListener<CellEventData>(ModelEventID.DataGenerated, OnDataGenerated);
         // 发送通知让Model干活
         Model.Instance.GenerateCellsDataAsync();        
     }
 
-    private void OnDataGenerated(Cell[,] state)
+    private void OnDataGenerated(CellEventData cellData)
     {
         // 取消订阅，避免重复调用
         //Model.Instance.OnCellsDataGenerated -= OnDataGenerated;
-        EventCenter.RemoveListener<Cell[,]>(EventID.DataGenerated, OnDataGenerated);
+        EventCenter.RemoveListener<CellEventData>(ModelEventID.DataGenerated, OnDataGenerated);
         //调用面板脚本根据二维数组将格子在游戏上显示
-        board.Draw(state);
-        board.SetBoardToCenter();
+        board.Draw(cellData.state);
+        //生成道具
+        boardForProps.DrawProps(cellData.propState);
         //gameover = false;
     }
 
@@ -88,3 +101,4 @@ public class GameController : MonoBehaviour
 
 
 }
+

@@ -4,13 +4,7 @@ using UnityEngine;
 using System;
 
 
-//定义事件，以后增加事件只需要在这里修改
-public class EventID
-{
-    public const string WIN = "Win";
-    public const string LOSE = "Lose";
-    public const string DataGenerated = "DataGenerated";
-}
+
 public class EventCenter : MonoBehaviour
 {
     //定义事件表，通过事件ID查询委托的函数，该委托可以接收一个任意输入值（会触发拆箱装箱吗？）
