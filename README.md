@@ -1,4 +1,5 @@
 # UnityMinesweeper
 扫雷项目学习
-1.修改测试
-2.拉取测试
+成果验收：可下载AppForDownload文件试玩
+右键放置flag
+按下r重新开始游戏
