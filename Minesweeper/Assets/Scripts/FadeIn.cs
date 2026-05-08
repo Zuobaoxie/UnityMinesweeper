@@ -15,6 +15,7 @@ public class FadeIn : MonoBehaviour
     private IEnumerator FadeInCoroutine()
     {
         float elapsedTime = 0;
+        //少用while,渐隐用DOTween插件
         while ( elapsedTime < fadeTime )
         {
             elapsedTime += Time.deltaTime;

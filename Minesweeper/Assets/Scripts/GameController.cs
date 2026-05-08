@@ -45,7 +45,9 @@ public class GameController : MonoBehaviour
 
     private void Start()
     {
+        //调整相机位置
         board.SetBoardToCenter();
+        //渐隐
         boardFadeIn.StartFadeIn();
         NewGame();
     }
@@ -55,7 +57,7 @@ public class GameController : MonoBehaviour
         // 订阅完成事件
         //Model.Instance.OnCellsDataGenerated += OnDataGenerated;
         EventCenter.AddListener<CellEventData>(ModelEventID.DataGenerated, OnDataGenerated);
-        // 发送通知让Model干活
+        // 发送通知让Model干活（加载资源）
         Model.Instance.GenerateCellsDataAsync();        
     }
 
@@ -95,7 +97,8 @@ public class GameController : MonoBehaviour
     {
         if (data.isWin){ Debug.Log("You Win! " + " Mine:" + data.mineSum);}
         else { Debug.Log("You Lose! "+ " Mine:" + data.mineSum); }
-        Time.timeScale = 0;
+        Time.timeScale = 0;//只影响物理  协程、事件不影响
+        //事件禁用   全局bool
         //Debug.Log("游戏暂停");
     }
 

@@ -8,8 +8,6 @@ public class ModelEventID
 }
 public class Model : MonoBehaviour
 {
-
-
     private static Model instance;
     public static Model Instance
     {
@@ -62,8 +60,8 @@ public class Model : MonoBehaviour
         yield return null;//等待一帧
         GenerateNumbers();
         yield return null;//等待一帧
-        GenerateScanners();
-        yield return null;//等待一帧
+        //GenerateScanners();
+        //yield return null;//等待一帧
         CellEventData cellData = new CellEventData(state, propState);
         // 数据生成完成，触发事件回调，回调时传入state参数。
         EventCenter.DisPatch(ModelEventID.DataGenerated, cellData);
@@ -281,8 +279,6 @@ public class Model : MonoBehaviour
         Cell cell = GetCell(cellPosition.x, cellPosition.y);
         CellForProps cellForProps = GetProps(cellPosition.x, cellPosition.y);
         bool isGameOver = false;
-        //cellForProps部分
-        Flood(cellForProps);
         //cell部分
         if (cell.type == Cell.Type.Invalid || cell.revealed || cell.flagged) { return false; }
         switch (cell.type)
@@ -301,6 +297,8 @@ public class Model : MonoBehaviour
                 CheckWinCondition();
                 break;
         }
+        //cellForProps部分
+        Flood(cellForProps, cell);
         //更新面板
         board.Draw(state);
         boardForProps.DrawProps(propState);
@@ -353,21 +351,21 @@ public class Model : MonoBehaviour
 
     }
     //洪范递归重载
-    private void Flood(CellForProps cell)
+    private void Flood(CellForProps cellForProps,Cell cell)
     {
         //已经被揭露
-        if (cell.revealed) { return; }
-        if (cell.type == CellForProps.Type.Invalid) { return; }
+        if (cellForProps.revealed) { return; }
+        if (cell.type == Cell.Type.Mine || cellForProps.type == CellForProps.Type.Invalid) { return; }
         //这里也考虑了数字的情况，如果是数字就需要被揭露，但不应该继续泛滥下去，所以这样写。
-        cell.revealed = true;
+        cellForProps.revealed = true;
         //更新数据
-        propState[cell.position.x, cell.position.y] = cell;
-        if (cell.type == CellForProps.Type.Empty)
+        propState[cellForProps.position.x, cellForProps.position.y] = cellForProps;
+        if (cellForProps.type == CellForProps.Type.Empty)
         {
-            Flood(GetCell(cell.position.x + 1, cell.position.y));
-            Flood(GetCell(cell.position.x - 1, cell.position.y));
-            Flood(GetCell(cell.position.x, cell.position.y + 1));
-            Flood(GetCell(cell.position.x, cell.position.y - 1));
+            Flood(GetProps(cell.position.x + 1, cell.position.y), GetCell(cell.position.x - 1, cell.position.y));
+            Flood(GetProps(cell.position.x - 1, cell.position.y), GetCell(cell.position.x - 1, cell.position.y));
+            Flood(GetProps(cell.position.x, cell.position.y + 1), GetCell(cell.position.x, cell.position.y + 1));
+            Flood(GetProps(cell.position.x, cell.position.y - 1), GetCell(cell.position.x, cell.position.y - 1));
         }
 
     }

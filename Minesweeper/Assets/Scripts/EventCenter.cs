@@ -7,9 +7,10 @@ using System;
 
 public class EventCenter : MonoBehaviour
 {
-    //定义事件表，通过事件ID查询委托的函数，该委托可以接收一个任意输入值（会触发拆箱装箱吗？）
+    //定义事件表，通过事件ID查询委托的函数，该委托可以接收一个任意输入值
     private static Dictionary<string, Delegate> eventTable = new Dictionary<string, Delegate>();
     //订阅事件
+    //
     public static void AddListener<T>(string eventId ,Action<T> callback)
     {
         //字典中是否存在这个事件ID
